@@ -2,7 +2,7 @@
 
 
 > [!CAUTION]
-> You need generate your own api keys for your own build and for safety issues
+> You need generate your own api keys for your own build for safety issues
 
 **MemeSpree** is a self-hosted and open-source entertainment hub just you need choose a platform.  
 
