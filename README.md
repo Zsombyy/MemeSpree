@@ -19,14 +19,12 @@ If you improve the project, please open a pull request so your features can be a
 ---
 ### 🧾 Supported platform
 - Tenor
-- GIPHY
-- Imgur 
+- GIPHY 
 - Imgflip
 ---
 ### Restrictions
 - Tenor 10 request hour / ip
 - Giphy 5 request hour / ip
-- Imgur 10 request hour / ip
 - Imgflip 10 request hour / ip
 ### Authors 🫶
 
