@@ -22,6 +22,8 @@ If you improve the project, please open a pull request so your features can be a
 - GIPHY 
 - Imgflip
 ---
+> [!NOTE]
+>  Restrictions are currently disabled so you can generate endlessly the memes in your favorite category
 ### Restrictions
 - Tenor 10 request hour / ip
 - Giphy 5 request hour / ip
