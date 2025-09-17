@@ -17,7 +17,7 @@ If you improve the project, please open a pull request so your features can be a
 ---
 
 ---
-### 🧾 Supported platform
+### 🧾 Supported platforms
 - Tenor
 - GIPHY 
 - Imgflip
