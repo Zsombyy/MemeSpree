@@ -1,7 +1,7 @@
 # MemeSpree  
 
 
-> [!CAUTION]
+> [!IMPORTANT]
 > You need generate your own api keys for your own build for safety issues
 
 **MemeSpree** is a self-hosted and open-source entertainment hub just you need choose a platform.  
@@ -28,10 +28,17 @@ If you improve the project, please open a pull request so your features can be a
 - Tenor 10 request hour / ip
 - Giphy 5 request hour / ip
 - Imgflip 10 request hour / ip
+---
 ### Authors 🫶
 
 - [@Zsombyy](https://www.github.com/Zsombyy) Maintainer
-
+- [@d0m-dev-hu](https://www.github.com/d0m-dev-hu) Meme categories
+- F4n.1 Multiple meme categories
+- ノエル Multiple meme categories
+- Zsoltʕᵒᴥᵒʔ Meme categories
+- [@RedglitchProject](https://github.com/RedglitchProject) Multiple meme categories, Real time API checker
+- ChromaticWolf Multiple meme categoires
+- Dörzsi Development Meme categories
 ---
 
 ### 📌 Note  
