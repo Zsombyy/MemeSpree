@@ -31,7 +31,7 @@ If you improve the project, please open a pull request so your features can be a
 ### Authors 🫶
 
 - [@Zsombyy](https://www.github.com/Zsombyy) Maintainer
-- [@d0m-dev-hu](https://www.github.com/d0m-dev-hu) Meme categories
+-  [@d0m-dev-hu](https://www.github.com/d0m-dev-hu) Meme categories
 - F4n.1 Multiple meme categories
 - ノエル Multiple meme categories
 - Zsoltʕᵒᴥᵒʔ Meme categories
