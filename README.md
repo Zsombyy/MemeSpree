@@ -14,7 +14,6 @@
 ### 🤝 Contributing  
 If you improve the project, please open a pull request so your features can be added and shared with the community.  
 
----
 
 ---
 ### 🧾 Supported platforms
