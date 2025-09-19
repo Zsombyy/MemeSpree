@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemeSpree - Endless Fun</title>
+    <style>
+         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        :root {
+            --primary-color: #0d1117;
+            --secondary-color: #161b22;
+            --accent-color: #58a6ff;
+            --text-color: #c9d1d9;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --warning-bg-color: rgba(255, 193, 7, 0.1);
+            --warning-border-color: rgba(255, 193, 7, 0.4);
+            --warning-text-color: #ffc107;
+            --combo-color: #28a745;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            text-align: center;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: -20%;
+            width: 50vmax;
+            height: 50vmax;
+            background: radial-gradient(circle, rgba(88, 166, 255, 0.15) 0%, rgba(88, 166, 255, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: moveBlob1 25s infinite alternate;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -20%;
+            right: -20%;
+            width: 50vmax;
+            height: 50vmax;
+            background: radial-gradient(circle, rgba(131, 88, 255, 0.15) 0%, rgba(131, 88, 255, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: moveBlob2 30s infinite alternate;
+        }
+
+        @keyframes moveBlob1 {
+            from { transform: translate(-10%, 10%) rotate(0deg); }
+            to { transform: translate(10%, -10%) rotate(360deg); }
+        }
+
+        @keyframes moveBlob2 {
+            from { transform: translate(10%, -10%) rotate(0deg); }
+            to { transform: translate(-10%, 10%) rotate(360deg); }
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .nav-button {
+            background: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(88, 166, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .nav-buttons {
+                position: relative;
+                top: auto;
+                right: auto;
+                justify-content: center;
+                margin: 1rem 0;
+                padding: 0 1rem;
+            }
+            
+            .nav-button {
+                font-size: 0.8rem;
+                padding: 10px 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            .nav-button {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 2rem auto;
+            flex-grow: 1;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #58a6ff, #a258ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .meme-container {
+            background: rgba(22, 27, 34, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            min-height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .api-note {
+            background-color: var(--warning-bg-color);
+            border: 1px solid var(--warning-border-color);
+            color: var(--warning-text-color);
+            border-radius: 10px;
+            padding: 0.75rem 1.25rem;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .api-note strong {
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        #meme-display {
+            width: 100%;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        #meme-display img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+        
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #category-display {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            height: 25px;
+        }
+
+        #combo-counter {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--combo-color);
+            height: 28px;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        #combo-counter.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .controls {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        #category-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c9d1d9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+        
+        .generate-btn {
+            background: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+        .generate-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(88, 166, 255, 0.2);
+        }
+        
+        .generate-btn:disabled {
+            background-color: #30363d;
+            color: #8b949e;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        footer {
+            padding: 1.5rem 0;
+            color: #8b949e;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+            background: var(--secondary-color);
+        } 
+    </style>
+</head>
+<body>
+    <div class="nav-buttons">
+        <a href="credit.html" class="nav-button">🫶 Credits</a>
+        <a href="contribute.html" class="nav-button"> 🤝 Contribute</a>
+    </div>
+    <div class="container">
+        <header>
+            <h1>MemeSpree</h1>
+            <p>Your daily dose of random, internet-breaking fun!</p>
+        </header>
+
+        <main>
+            <div class="meme-container">
+                <div id="meme-display">
+                    <p>Select a category and generate your first meme!</p>
+                </div>
+                <div id="category-display"></div>
+                <div id="combo-counter"></div>
+            </div>
+
+            <div class="api-note">
+                <strong>Please Note:</strong> Classic meme template generation is temporarily disabled. It will return in the next version.
+ (Imgflip)            </div>
+            
+            <div class="controls">
+                <select id="category-select"></select>
+                <button id="generate-meme-btn" class="generate-btn">Generate Meme</button>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <p>Copyright Cubxy Development 2024-2025 | Free to contribute | Version 1.0.0 Release</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const memeDisplay = document.getElementById('meme-display');
+            const categoryDisplay = document.getElementById('category-display');
+            const generateBtn = document.getElementById('generate-meme-btn');
+            const categorySelect = document.getElementById('category-select');
+            const comboCounterDisplay = document.getElementById('combo-counter');
+            
+            let comboCounter = 0;
+
+            const API_KEYS = {
+                TENOR: 'YOUR-API-KEY', // Get at  developers.google.com/tenor/guides/quickstart 
+                GIPHY: 'YOUR-API-KEY' // gGet at developers.giphy.com/dashboard
+            };
+
+            const CATEGORIES = [
+                'funny animal', 'fail', 'reaction', 'wholesome', 'relatable',
+                'gaming', 'silly cat', 'doggo', 'coding humor', 'science memes',
+                'tech humor', 'movie gifs', 'nerd', 'kawaii', 'linux', 'silly doggo', 
+                'school memes', 'idk', 'anime', 'funny', 'crazy', 'bruh', 'cringe',  
+                'brainrot', 'kitty', 'programing humor', 'money', 'mlg', 'capybara', 'yo mama', 'knock knock'
+            ];
+
+            function populateCategorySelector() {
+                const randomOption = document.createElement('option');
+                randomOption.value = 'random';
+                randomOption.textContent = '✨ Surprise Me! (Random)';
+                categorySelect.appendChild(randomOption);
+
+                CATEGORIES.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = category.replace(/\b\w/g, char => char.toUpperCase());
+                    categorySelect.appendChild(option);
+                });
+            }
+            populateCategorySelector();
+
+            async function getTenorMeme(category) {
+                console.log(`Trying Tenor with category: ${category}`);
+                const url = `https://tenor.googleapis.com/v2/search?q=${encodeURIComponent(category)}&key=${API_KEYS.TENOR}&limit=10&media_filter=gif`;
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Tenor API request failed.');
+                const data = await response.json();
+                const randomIndex = Math.floor(Math.random() * data.results.length);
+                return data.results[randomIndex].media_formats.gif.url;
+            }
+
+            async function getGiphyMeme(category) {
+                console.log(`Trying Giphy with category: ${category}`);
+                const url = `https://api. giphy.com/v1/gifs/search?api_key=${API_KEYS.GIPHY}&q=${encodeURIComponent(category)}&limit=10&rating=g`;
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Giphy API request failed.');
+                const data = await response.json();
+                const randomIndex = Math.floor(Math.random() * data.data.length);
+                return data.data[randomIndex].images.original.url;
+            }
+
+            async function getImgflipMeme() {
+                console.log('Trying Imgflip...');
+                const url = 'https://api.imgflip.com/get_memes';
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Imgflip API request failed.');
+                const data = await response.json();
+                const memes = data.data.memes;
+                const randomIndex = Math.floor(Math.random() * memes.length);
+                return { url: memes[randomIndex].url, category: 'Classic Template' };
+            }
+            
+
+            function updateComboCounter() {
+                if (comboCounter < 2) {
+                    comboCounterDisplay.textContent = '';
+                    comboCounterDisplay.classList.remove('visible');
+                    return;
+                }
+                
+                let message = `🔥 Combo x${comboCounter}`;
+                if (comboCounter >= 25) message = `🏆 LEGENDARY x${comboCounter}`;
+                else if (comboCounter >= 10) message = `🚀 Meme Lord x${comboCounter}`;
+                
+                comboCounterDisplay.textContent = message;
+                comboCounterDisplay.classList.add('visible');
+            }
+
+            const setLoading = (isLoading) => {
+                generateBtn.disabled = isLoading;
+                if (isLoading) {
+                    memeDisplay.innerHTML = '<div class="loading-spinner"></div>';
+                    categoryDisplay.textContent = 'Summoning meme...';
+                }
+            };
+            
+            const displayMeme = (url, category) => {
+                memeDisplay.innerHTML = `<img src="${url}" alt="${category} meme">`;
+                const formattedCategory = category.replace(/\b\w/g, char => char.toUpperCase());
+                categoryDisplay.textContent = `Category: ${formattedCategory}`;
+            };
+
+            const displayError = (message) => {
+                memeDisplay.innerHTML = `<p style="color: #ff8b8b;">${message}</p>`;
+                categoryDisplay.textContent = 'Category Selection Disabled';
+                comboCounter = 0;
+                updateComboCounter();
+            };
+
+            async function generateMeme() {
+                setLoading(true);
+                const selectedValue = categorySelect.value;
+                let targetCategory;
+
+                if (selectedValue === 'random') {
+                    targetCategory = CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)];
+                } else {
+                    targetCategory = selectedValue;
+                }
+                
+                const apiProviders = [
+                    () => getTenorMeme(targetCategory).then(url => ({ url, category: targetCategory })),
+                    () => getGiphyMeme(targetCategory).then(url => ({ url, category: targetCategory })),
+                  // () => getImgflipMeme()
+                ];
+
+                for (let i = apiProviders.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [apiProviders[i], apiProviders[j]] = [apiProviders[j], apiProviders[i]];
+                }
+
+                let success = false;
+                for (const fetchMeme of apiProviders) {
+                    try {
+                        const result = await fetchMeme();
+                        if (result && result.url) {
+                            displayMeme(result.url, result.category);
+                            success = true;
+                            break;
+                        }
+                    } catch (error) {
+                        console.error('API Error:', error.message);
+                    }
+                }
+
+                if (success) {
+                    comboCounter++;
+                    updateComboCounter();
+                    setLoading(false);
+                } else {
+                    displayError("All meme sources are currently unavailable. The button has been disabled. Please reload the page to try again.");
+                }
+            }
+
+            generateBtn.addEventListener('click', generateMeme);
+        });
+    </script>
+</body>
+</html>
