@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MemeSpree - Credits</title>
+        <script src="//instant.page/5.2.0" type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        :root {
+            --primary-color: #0d1117;
+            --secondary-color: #161b22;
+            --accent-color: #58a6ff;
+            --text-color: #c9d1d9;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --warning-bg-color: rgba(255, 193, 7, 0.1);
+            --warning-border-color: rgba(255, 193, 7, 0.4);
+            --warning-text-color: #ffc107;
+            --combo-color: #28a745;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            text-align: center;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: -20%;
+            width: 50vmax;
+            height: 50vmax;
+            background: radial-gradient(circle, rgba(88, 166, 255, 0.15) 0%, rgba(88, 166, 255, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: moveBlob1 25s infinite alternate;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -20%;
+            right: -20%;
+            width: 50vmax;
+            height: 50vmax;
+            background: radial-gradient(circle, rgba(131, 88, 255, 0.15) 0%, rgba(131, 88, 255, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: moveBlob2 30s infinite alternate;
+        }
+
+        @keyframes moveBlob1 {
+            from { transform: translate(-10%, 10%) rotate(0deg); }
+            to { transform: translate(10%, -10%) rotate(360deg); }
+        }
+
+        @keyframes moveBlob2 {
+            from { transform: translate(10%, -10%) rotate(0deg); }
+            to { transform: translate(-10%, 10%) rotate(360deg); }
+        }
+
+        .nav-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(88, 166, 255, 0.2);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 2rem auto;
+            flex-grow: 1;
+            padding-top: 60px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #58a6ff, #a258ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .credits-section {
+            background: rgba(22, 27, 34, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .credits-section h2 {
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .credits-section p, .credits-section ul {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .credits-section ul {
+            padding-left: 2rem;
+        }
+
+        .credits-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .credit-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .credit-name {
+            font-weight: 600;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+        }
+
+        .credit-role {
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+
+        .api-credits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .api-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .api-logo {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .back-button {
+            background: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 2rem;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(88, 166, 255, 0.2);
+        }
+
+        footer {
+            padding: 1.5rem 0;
+            color: #8b949e;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+            background: var(--secondary-color);
+        }
+        </style>
+    </head>
+ <body>
+    <a href="index.html" class="nav-button"><- Home </a>
+
+<div class="container">
+<header>
+    <h1>Credits</h1>
+    <p>Special thanks to everyone who made MemeSpree possible!</p>
+    <p>Thanks to everyone for the fun ideas :D</p>
+</header>
+<main> 
+<div class="credits-section">
+        <h2>🎫 Development Team</h2>
+        <div class="credit-item">
+            <div>
+                <div class="credit-name">Cubxy (Zsombyy)</div>
+                <div class="credit-role">Maintainer, Project Leader</div>
+            </div>
+        </div>
+        <h2>🎖 Idea Team</h2>
+        <div class="credit-item">
+            <div>
+                <div class="credit-name">D0m</div>
+                <div class="credit-role">Meme categories</div>
+                <div class="credit-name">F4n.1</div>
+                <div class="credit-role">Multiple meme categories</div>
+                <div class="credit-name">ノエル</div>
+                <div class="credit-role">Multiple meme categories</div>
+                <div class="credit-name">Zsoltʕᵒᴥᵒʔ</div>
+                <div class="credit-role">Meme categories</div>
+                <div class="credit-name">RedGlitch</div>
+                <div class="credit-role">Multiple meme categories, Real time API checker</div>
+                <div class="credit-name">ChromaticWolf</div>
+                <div class="credit-role">Multiple meme categoires</div>
+            </div>
+        </div>
+ </div>
+<div class="credits-section">
+    <h2>🍂 APIs & Services</h2>
+<p>MemeSpree wouldn't be possible without amazing services:</p>
+<div class="api-credits">
+    <div class="api-item">
+ <div class="api-logo">🎩</div>
+ <h3>Tenor API</h3>
+  <p>Providing high-quality GIFs and animated content</p>
+    </div>
+ <div class="api-item">
+    <div class="api-logo">🧢</div>
+    <h3>Giphy API</h3>
+    <p>Endless collection of GIFs and stickers</p>
+ </div>
+ <div class="api-item">
+    <div class="api-logo">🪖</div>
+    <h3>Imgflip API</h3>
+    <p>Classic meme templates and formats</p>
+ </div>
+</div>
+</div>
+<div class="credits-section">
+    <h2>🎨 Design & Resources</h2>
+    <li><strong>Google Fonts:</strong> Poppins font family</li>
+    <li><strong>CSS Animations:</strong> Custom blob animations and transitions</li>
+    <li><strong>Color Scheme:</strong> GitHub Dark-inspired theme</li>
+    <li><strong>Liquid Glass Feeling:</strong> Inspired by Apple</li>
+    <li><strong>Web Server and Proxy:</strong> Thanks to Nginx we can run the site smoothly</li>
+    <li><strong>Performance Booster:</strong> Thanks to Instant Page, the site performance is boosted significantly</li>
+</div>
+<div class="credits-section">
+    <h2>🙏 Very Special Thanks</h2>
+    <p>Thanks to the meme community for providing endless entertainment and inspiration. This project is dedicated to all the meme creators, sharers, and enthusiasts who make the internet a funnier place.</p>
+</div>
+</main>
+</div>
+<footer>
+    <p>Copyright Cubxy Development 2024-2025 | Free to contribute | Version 1.0.0 Release</p>
+</footer>
+</body>
+</html>
