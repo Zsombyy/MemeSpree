@@ -346,7 +346,7 @@
 
             const API_KEYS = {
                 TENOR: 'YOUR-API-KEY', // Get at  developers.google.com/tenor/guides/quickstart 
-                GIPHY: 'YOUR-API-KEY' // gGet at developers.giphy.com/dashboard
+                GIPHY: 'YOUR-API-KEY' // Get at developers.giphy.com/dashboard
             };
 
             const CATEGORIES = [
@@ -354,7 +354,8 @@
                 'gaming', 'silly cat', 'doggo', 'coding humor', 'science memes',
                 'tech humor', 'movie gifs', 'nerd', 'kawaii', 'linux', 'silly doggo', 
                 'school memes', 'idk', 'anime', 'funny', 'crazy', 'bruh', 'cringe',  
-                'brainrot', 'kitty', 'programing humor', 'money', 'mlg', 'capybara', 'yo mama', 'knock knock'
+                'brainrot', 'kitty', 'programing humor', 'money', 'mlg', 'capybara', 'yo mama', 'knock knock',
+                'bunny', 'slanders', 'minecraft', 'among us', 'cyber', 'miku'
             ];
 
             function populateCategorySelector() {
@@ -384,7 +385,7 @@
 
             async function getGiphyMeme(category) {
                 console.log(`Trying Giphy with category: ${category}`);
-                const url = `https://api. giphy.com/v1/gifs/search?api_key=${API_KEYS.GIPHY}&q=${encodeURIComponent(category)}&limit=10&rating=g`;
+                const url = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEYS.GIPHY}&q=${encodeURIComponent(category)}&limit=10&rating=g`;
                 const response = await fetch(url);
                 if (!response.ok) throw new Error('Giphy API request failed.');
                 const data = await response.json();
@@ -411,9 +412,15 @@
                     return;
                 }
                 
-                let message = `🔥 Combo x${comboCounter}`;
-                if (comboCounter >= 25) message = `🏆 LEGENDARY x${comboCounter}`;
-                else if (comboCounter >= 10) message = `🚀 Meme Lord x${comboCounter}`;
+                let message;
+                if (comboCounter >= 50) {
+                    message = `🥳 You like the project x${comboCounter}`;
+                } else if (comboCounter >= 25) {
+                    message = `🫡 Respected user x${comboCounter}`;
+                } else if (comboCounter >= 10) {
+                    message = `🚀 Meme Lord x${comboCounter}`;
+                }
+
                 
                 comboCounterDisplay.textContent = message;
                 comboCounterDisplay.classList.add('visible');
