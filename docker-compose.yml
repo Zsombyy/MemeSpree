@@ -6,6 +6,6 @@ services:
     volumes:
       - ./index.html:/usr/share/nginx/html/index.html:ro
       - ./credit.html:/usr/share/nginx/html/credit.html:ro
-      - ./api.html:/usr/share/nginx/html/api.fhtml:ro
+      - ./api.html:/usr/share/nginx/html/api.html:ro
     container_name: memespree
     restart: unless-stopped
