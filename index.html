@@ -302,7 +302,7 @@
 <body>
     <div class="nav-buttons">
         <a href="credit.html" class="nav-button">🫶 Credits</a>
-        <a href="contribute.html" class="nav-button"> 🤝 Contribute</a>
+        <a href="https://github.com/Zsombyy/MemeSpree/tree/main" class="nav-button"> 🤝 Contribute</a>
     </div>
     <div class="container">
         <header>
@@ -385,7 +385,7 @@
 
             async function getGiphyMeme(category) {
                 console.log(`Trying Giphy with category: ${category}`);
-                const url = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEYS.GIPHY}&q=${encodeURIComponent(category)}&limit=10&rating=g`;
+                const url = `https://api. giphy.com/v1/gifs/search?api_key=${API_KEYS.GIPHY}&q=${encodeURIComponent(category)}&limit=10&rating=g`;
                 const response = await fetch(url);
                 if (!response.ok) throw new Error('Giphy API request failed.');
                 const data = await response.json();
@@ -412,18 +412,7 @@
                     return;
                 }
                 
-                let message;
-                if (comboCounter >= 50) {
-                    message = `🥳 You like the project x${comboCounter}`;
-                } else if (comboCounter >= 25) {
-                    message = `🫡 Respected user x${comboCounter}`;
-                } else if (comboCounter >= 10) {
-                    message = `🚀 Meme Lord x${comboCounter}`;
-                }
-
-                
-                comboCounterDisplay.textContent = message;
-                comboCounterDisplay.classList.add('visible');
+               let message = `🔥 Combo x${comboCounter}`;
             }
 
             const setLoading = (isLoading) => {
