@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemeSpree - API Status</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        :root {
+            --primary-color: #0d1117;
+            --secondary-color: #161b22;
+            --accent-color: #58a6ff;
+            --text-color: #c9d1d9;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: -20%;
+            width: 50vmax;
+            height: 50vmax;
+            background: radial-gradient(circle, rgba(88, 166, 255, 0.15) 0%, rgba(88, 166, 255, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: moveBlob1 25s infinite alternate;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -20%;
+            right: -20%;
+            width: 50vmax;
+            height: 50vmax;
+            background: radial-gradient(circle, rgba(131, 88, 255, 0.15) 0%, rgba(131, 88, 255, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: moveBlob2 30s infinite alternate;
+        }
+
+        @keyframes moveBlob1 {
+            from { transform: translate(-10%, 10%) rotate(0deg); }
+            to { transform: translate(10%, -10%) rotate(360deg); }
+        }
+
+        @keyframes moveBlob2 {
+            from { transform: translate(10%, -10%) rotate(0deg); }
+            to { transform: translate(-10%, 10%) rotate(360deg); }
+        }
+
+        .nav-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            z-index: 1000;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(88, 166, 255, 0.2);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 2rem auto;
+            flex-grow: 1;
+            padding-top: 60px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #58a6ff, #a258ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .status-overview {
+            background: rgba(22, 27, 34, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .overall-status {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+            position: relative;
+        }
+
+        .status-indicator.online {
+            background-color: var(--success-color);
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        }
+
+        .status-indicator.degraded {
+            background-color: var(--warning-color);
+            box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+        }
+
+        .status-indicator.offline {
+            background-color: var(--danger-color);
+            box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+        }
+
+        .status-indicator.checking {
+            background-color: var(--info-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .api-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .api-card {
+            background: rgba(22, 27, 34, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .api-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .api-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .api-name {
+            display: flex;
+            align-items: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .api-logo {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        .api-status {
+            font-weight: 600;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .api-status.online {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .api-status.degraded {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: var(--warning-color);
+            border: 1px solid var(--warning-color);
+        }
+
+        .api-status.offline {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+        }
+
+        .api-status.checking {
+            background-color: rgba(23, 162, 184, 0.2);
+            color: var(--info-color);
+            border: 1px solid var(--info-color);
+        }
+
+        .api-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 0.3rem;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .last-updated {
+            text-align: center;
+            margin-top: 2rem;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        .refresh-button {
+            background: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin: 1rem;
+        }
+
+        .refresh-button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(88, 166, 255, 0.2);
+        }
+
+        .refresh-button:disabled {
+            background-color: #30363d;
+            color: #8b949e;
+            cursor: not-allowed;
+        }
+
+        .loading-spinner {
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top: 3px solid var(--accent-color);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            padding: 1.5rem 0;
+            color: #8b949e;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+            background: var(--secondary-color);
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .api-details {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="nav-button">← Back to MemeSpree</a>
+
+    <div class="container">
+        <header>
+            <h1>API Status Monitor</h1>
+            <p>Real-time monitoring of MemeSpree's API services</p>
+        </header>
+
+        <div class="status-overview">
+            <div class="overall-status">
+                <span class="status-indicator checking" id="overall-indicator"></span>
+                <span id="overall-status-text">Checking API Status...</span>
+            </div>
+            <button class="refresh-button" id="refresh-btn" onclick="checkAllAPIs()">
+                 Refresh Status
+            </button>
+        </div>
+
+        <div class="api-grid">
+            <div class="api-card">
+                <div class="api-header">
+                    <div class="api-name">
+                        Tenor API
+                    </div>
+                    <div class="api-status checking" id="tenor-status">Checking...</div>
+                </div>
+                <div class="api-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Response Time</div>
+                        <div class="detail-value" id="tenor-response-time">--</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Last Check</div>
+                        <div class="detail-value" id="tenor-last-check">--</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="api-card">
+                <div class="api-header">
+                    <div class="api-name">
+
+                        Giphy API
+                    </div>
+                    <div class="api-status checking" id="giphy-status">Checking...</div>
+                </div>
+                <div class="api-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Response Time</div>
+                        <div class="detail-value" id="giphy-response-time">--</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Last Check</div>
+                        <div class="detail-value" id="giphy-last-check">--</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="api-card">
+                <div class="api-header">
+                    <div class="api-name">
+                        Imgflip API
+                    </div>
+                    <div class="api-status checking" id="imgflip-status">Checking...</div>
+                </div>
+                <div class="api-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Response Time</div>
+                        <div class="detail-value" id="imgflip-response-time">--</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Last Check</div>
+                        <div class="detail-value" id="imgflip-last-check">--</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="last-updated">
+            Last updated: <span id="last-updated-time">--</span>
+            <br>
+            Auto-refresh every 30 seconds
+        </div>
+    </div>
+
+    <footer>
+        <p>Copyright Cubxy Development 2024-2025 | MemeSpree API Status Monitor | Made with love</p>
+    </footer>
+
+    <script>
+
+        const API_KEYS = {
+            TENOR: 'AIzaSyCV3Jo-FArvsn6v_upOD8-z8bPXKalnCho',
+            GIPHY: 'YOUR-API-KEY'
+        };
+
+        let statusData = {
+            tenor: { status: 'checking', responseTime: 0, lastCheck: null },
+            giphy: { status: 'checking', responseTime: 0, lastCheck: null },
+            imgflip: { status: 'checking', responseTime: 0, lastCheck: null }
+        };
+s
+        async function checkTenorAPI() {
+            const startTime = Date.now();
+            try {
+                const response = await fetch(
+                    `https://tenor.googleapis.com/v2/search?q=test&key=${API_KEYS.TENOR}&limit=1`,
+                    { timeout: 10000 }
+                );
+                const responseTime = Date.now() - startTime;
+                
+                if (response.ok) {
+                    statusData.tenor = {
+                        status: responseTime > 3000 ? 'degraded' : 'online',
+                        responseTime: responseTime,
+                        lastCheck: new Date()
+                    };
+                } else {
+                    throw new Error('API returned error');
+                }
+            } catch (error) {
+                statusData.tenor = {
+                    status: 'offline',
+                    responseTime: Date.now() - startTime,
+                    lastCheck: new Date(),
+                    error: error.message
+                };
+            }
+        }
+
+        async function checkGiphyAPI() {
+            const startTime = Date.now();
+            try {
+                const response = await fetch(
+                    `https://api.giphy.com/v1/gifs/search?api_key=${API_KEYS.GIPHY}&q=test&limit=1`,
+                    { timeout: 10000 }
+                );
+                const responseTime = Date.now() - startTime;
+                
+                if (response.ok) {
+                    statusData.giphy = {
+                        status: responseTime > 3000 ? 'degraded' : 'online',
+                        responseTime: responseTime,
+                        lastCheck: new Date()
+                    };
+                } else {
+                    throw new Error('API returned error');
+                }
+            } catch (error) {
+                statusData.giphy = {
+                    status: 'offline',
+                    responseTime: Date.now() - startTime,
+                    lastCheck: new Date(),
+                    error: error.message
+                };
+            }
+        }
+
+        async function checkImgflipAPI() {
+            const startTime = Date.now();
+            try {
+                const response = await fetch('https://api.imgflip.com/get_memes', { timeout: 10000 });
+                const responseTime = Date.now() - startTime;
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        statusData.imgflip = {
+                            status: responseTime > 3000 ? 'degraded' : 'online',
+                            responseTime: responseTime,
+                            lastCheck: new Date()
+                        };
+                    } else {
+                        throw new Error('API returned unsuccessful response');
+                    }
+                } else {
+                    throw new Error('API returned error');
+                }
+            } catch (error) {
+                statusData.imgflip = {
+                    status: 'offline',
+                    responseTime: Date.now() - startTime,
+                    lastCheck: new Date(),
+                    error: error.message
+                };
+            }
+        }
+
+
+        function updateUI() {
+     
+            Object.keys(statusData).forEach(api => {
+                const data = statusData[api];
+                const statusElement = document.getElementById(`${api}-status`);
+                const responseTimeElement = document.getElementById(`${api}-response-time`);
+                const lastCheckElement = document.getElementById(`${api}-last-check`);
+
+                statusElement.className = `api-status ${data.status}`;
+                statusElement.textContent = getStatusText(data.status);
+
+                responseTimeElement.textContent = `${data.responseTime}ms`;
+                lastCheckElement.textContent = data.lastCheck ? 
+                    data.lastCheck.toLocaleTimeString() : '--';
+            });
+
+            updateOverallStatus();
+            
+
+            document.getElementById('last-updated-time').textContent = new Date().toLocaleString();
+        }
+
+        function getStatusText(status) {
+            switch (status) {
+                case 'online': return ' Online';
+                case 'degraded': return ' Degraded';
+                case 'offline': return ' Offline';
+                case 'checking': return ' Checking...';
+                default: return 'Unknown';
+            }
+        }
+
+        function updateOverallStatus() {
+            const indicator = document.getElementById('overall-indicator');
+            const statusText = document.getElementById('overall-status-text');
+            
+            const statuses = Object.values(statusData).map(d => d.status);
+            const onlineCount = statuses.filter(s => s === 'online').length;
+            const offlineCount = statuses.filter(s => s === 'offline').length;
+            const degradedCount = statuses.filter(s => s === 'degraded').length;
+
+            if (offlineCount === statuses.length) {
+                indicator.className = 'status-indicator offline';
+                statusText.textContent = 'All Services Offline';
+            } else if (offlineCount > 0 || degradedCount > 0) {
+                indicator.className = 'status-indicator degraded';
+                statusText.textContent = `${onlineCount}/${statuses.length} Services Operational`;
+            } else {
+                indicator.className = 'status-indicator online';
+                statusText.textContent = 'All Services Operational';
+            }
+        }
+         async function checkAllAPIs() {
+            const refreshBtn = document.getElementById('refresh-btn');
+            refreshBtn.disabled = true;
+            refreshBtn.innerHTML = '🔄 Checking... <div class="loading-spinner"></div>';
+
+            Object.keys(statusData).forEach(api => {
+                statusData[api].status = 'checking';
+                document.getElementById(`${api}-status`).className = 'api-status checking';
+                document.getElementById(`${api}-status`).textContent = 'Checking...';
+            });
+
+            document.getElementById('overall-indicator').className = 'status-indicator checking';
+            document.getElementById('overall-status-text').textContent = 'Checking API Status...';
+
+
+            await Promise.all([
+                checkTenorAPI(),
+                checkGiphyAPI(),
+                checkImgflipAPI()
+            ]);
+
+            updateUI();
+
+            refreshBtn.disabled = false;
+            refreshBtn.innerHTML = '🔄 Refresh Status';
+        }
+
+        let autoRefreshInterval;
+
+        function startAutoRefresh() {
+            autoRefreshInterval = setInterval(checkAllAPIs, 30000);
+        }
+
+        function stopAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAllAPIs();
+            startAutoRefresh();
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopAutoRefresh();
+            } else {
+                startAutoRefresh();
+                checkAllAPIs();
+            }
+        });
+    </script>
+</body>
+</html>
+
