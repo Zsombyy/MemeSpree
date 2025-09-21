@@ -1,0 +1,11 @@
+services:
+  memespree:
+    image: nginx:alpine
+    ports:
+      - 8902:80
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+      - ./credits.html:/usr/share/nginx/html/credits.html:ro
+      - ./api.html:/usr/share/nginx/html/api.fhtml:ro
+    container_name: memespree
+    restart: unless-stopped

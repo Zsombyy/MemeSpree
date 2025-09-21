@@ -1,5 +1,6 @@
 # MemeSpree  
-
+Coding time for this project you can see below this message
+![MemeSpree](https://hackatime-badge.hackclub.com/U092FCQPD8Q/MemeSpree)
 
 > [!IMPORTANT]
 > You need generate your own api keys for your own build for safety issues
@@ -21,13 +22,6 @@ If you improve the project, please open a pull request so your features can be a
 - GIPHY 
 - Imgflip
 ---
-> [!NOTE]
->  Restrictions are currently disabled so you can generate endlessly the memes in your favorite category
-### Restrictions
-- Tenor 10 request hour / ip
-- Giphy 5 request hour / ip
-- Imgflip 10 request hour / ip
----
 ### Authors 🫶
 
 - [@Zsombyy](https://www.github.com/Zsombyy) Maintainer
@@ -45,4 +39,3 @@ This project was created for the **HackClub Siege** event.
 
   
   
-
