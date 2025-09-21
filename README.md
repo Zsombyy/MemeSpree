@@ -1,5 +1,5 @@
 # MemeSpree  
-Coding time for this project you can see below this message
+Coding time for this project you can see next to this message
 ![MemeSpree](https://hackatime-badge.hackclub.com/U092FCQPD8Q/MemeSpree)
 
 > [!IMPORTANT]
